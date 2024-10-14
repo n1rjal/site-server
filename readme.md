@@ -13,7 +13,7 @@ When you run the following command, the setup will be created using `docker-comp
 ![Physical architecture of Djate](/assets/physical_architecture.jpg)
 
 ### Webserver:
-The webserver is based on Django and comes preinstalled with Django, Django REST framework (DRF), `drf_yasg` for API documentation, and other essential packages. You can find the full list of dependencies in [requirements.txt](https://github.com/n1rjal/djate/blob/main/requirements.txt).
+The webserver is based on Django and comes preinstalled with Django, Django REST framework (DRF), `drf_yasg` for API documentation, and other essential packages. You can find the full list of dependencies in [requirements.txt](https://github.com/GNOME-Nepal/site-server/blob/main/requirements.txt).
 
 ### Database:
 The default database used in Djate is SQLite, as it’s lightweight and suitable for quick testing and learning about Django internals. However, there's an open discussion to consider switching to PostgreSQL as the default database.
