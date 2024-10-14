@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     "django_celery_results",
     # django apps
     # todo
-    "todo",
     "newsletter",
 ]
 
