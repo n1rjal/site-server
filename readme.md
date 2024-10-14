@@ -45,6 +45,33 @@ Djate follows the standard Django project structure with `apps` and `manage.py` 
 
 The code architecture also leverages Django REST Framework (DRF) generics and viewsets for building APIs efficiently.
 
+## Getting Started
+
+To get started with Djate, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/n1rjal/djate.git
+   cd djate
+   ```
+
+2. Run the project using Docker Compose:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+3. Access the web application:
+
+   Open your browser and go to `http://localhost:8000`.
+
+4. Access Flower for task monitoring:
+
+   Flower is available at `http://localhost:7777` with the default credentials:
+   - **Username**: `admin`
+   - **Password**: `pswd`
+
 ## Integration
 - [Sentry](/documents/sentry.md)
 
