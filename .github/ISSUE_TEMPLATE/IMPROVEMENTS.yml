@@ -2,7 +2,7 @@ name: Improvement  Request
 description: Create a new ticket for a new feature request
 title: "[REQUEST]: "
 labels: [
-  "enhancement" 
+  "enhancement" ,"question" 
 ]
 assignees:  
 - rex9840
