@@ -2,7 +2,7 @@
 | acronym for Django Awesome Template 
 
 ## What is Djate?
-Djate is a simple yet effective Django template that is beginner-friendly and intended for production use (in future)
+Djate is a simple yet effective Django template that is beginner-friendly and intended for production use (in future). Its core focus is on simplifying Django app setup and configuration using Docker, with a goal of eventually being production-ready.
 
 ## Purpose
 The purpose of this template is to simplify testing in Django, making it quick and easy without the hassle of manual setup. Instead of manually installing packages like `django-rest-framework`, `celery`, `celery-backend`, and `flower`, you can get everything up and running with just one click and a single command.
@@ -13,10 +13,10 @@ When you run the following command, the setup will be created using `docker-comp
 ![Physical architecture of Djate](/assets/physical_architecture.jpg)
 
 ### Webserver:
-The webserver is based on Django and comes preinstalled with Django, Django REST framework (DRF), `drf_yasg` for API documentation, and other essential packages. You can find the full list of dependencies in [requirements.txt](https://github.com/n1rjal/djate/blob/main/requirements.txt).
+The webserver is based on Django and comes preinstalled with Django, Django REST framework (DRF), `drf_yasg` for API documentation, and other essential packages. You can find the full list of dependencies in [requirements.txt](https://github.com/GNOME-Nepal/site-server/blob/main/requirements.txt).
 
 ### Database:
-The default database used in Djate is SQLite, as it’s lightweight and suitable for quick testing and learning about Django internals. However, there's an open discussion to consider switching to PostgreSQL as the default database.
+The default database used in Djate is SQLite, as it’s lightweight and suitable for quick testing and learning about Django internals. However, there's an open discussion to consider switching to PostgreSQL as the default database. You can vote [here](https://github.com/n1rjal/djate/issues/1).
 
 ### Message Queue:
 Djate uses Redis as the message queue for Celery. Redis is a popular and efficient transport for managing background tasks in Django.
@@ -25,10 +25,20 @@ Djate uses Redis as the message queue for Celery. Redis is a popular and efficie
 Flower is included for Celery task monitoring. It allows you to monitor the status of Celery tasks and queues.
 Flower runs on port `7777` with the following default credentials:
 
-**Username:** admin
+**Username:** admin  
 **Password:** pswd
 
 > _Flower runs on port 7777. Suiiiii!_
+
+## Features
+Djate comes pre-installed with the following technologies:
+
+- **Django**: A high-level Python web framework.
+- **Django REST Framework (DRF)**: A powerful and flexible toolkit for building Web APIs.
+- **Celery**: An asynchronous task queue/job queue for handling background tasks.
+- **Redis**: Used as the message broker for Celery.
+- **Flower**: A web-based tool for monitoring Celery tasks.
+- **Docker**: Djate is containerized using Docker for easier deployment and testing.
 
 ## Code Architecture:
 Djate follows the standard Django project structure with `apps` and `manage.py` in the root directory. Each app has components such as `views.py`, `models.py`, `urls.py`, etc. Celery tasks are defined in `tasks.py` for each application.
