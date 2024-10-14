@@ -1,0 +1,59 @@
+services:
+  app:
+    container_name: djate_app
+    restart: unless-stopped
+    build:
+      context: .
+    volumes:
+      - djate_data:/app/
+      - .:/app
+    depends_on:
+      - redis
+      - worker_beat
+    ports:
+      - "8000:8000"
+    env_file: .env
+    networks:
+      - djate_net
+
+  worker_beat:
+    restart: unless-stopped
+    build:
+      context: .
+    command: ["/bin/sh", "-c", "celery -A core  worker -l info --concurrency=1"]
+    env_file: .env
+    volumes:
+      - djate_data:/app/
+      - .:/app
+    networks:
+      - djate_net
+
+  redis:
+    container_name: djate_syncer_redis
+    image: redis:alpine
+    restart: always
+    volumes:
+      - djate_data:/app/
+    networks:
+      - djate_net
+
+  flower:
+    image: mher/flower
+    command: ['celery', '--broker=redis://redis:6379', 'flower', '--port=5555', "--basic-auth=admin:pswd"]
+    ports:
+      - 7777:5555
+    env_file: .env
+    depends_on:
+      - redis
+    networks:
+      - djate_net
+
+
+volumes:
+  djate_data:
+    driver: local
+
+networks:
+  djate_net:
+    driver: bridge
+    name: djate_net
