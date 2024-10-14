@@ -1,5 +1,5 @@
 name: Improvement  Request
-description: Create a new ticket for a new feature request
+description: Create a new ticket for a improvement request  
 title: "[REQUEST]: "
 labels: [
   "enhancement" ,"question" 
