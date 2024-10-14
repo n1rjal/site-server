@@ -1,0 +1,47 @@
+name: Improvement  Request
+description: Create a new ticket for a new feature request
+title: "[REQUEST]: "
+labels: [
+  "enhancement" 
+]
+assignees:  
+- rex9840
+- n1rjal 
+- Sailesh-Singh
+
+body:
+  - type: input
+    id: feature_name
+    attributes:
+      label: "Feature Name"
+      description: "Name of the feature being requested"
+      placeholder: "e.g., Customizable Widgets"
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: "Feature Description"
+      description: "Detailed description of the feature request"
+      placeholder: "Describe the feature in detail"
+    validations:
+      required: true
+
+  - type: input
+    id: benefits
+    attributes:
+      label: "Benefits"
+      description: "List the benefits of this feature"
+      placeholder: "e.g., Increased user engagement"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: "Additional Notes"
+      description: "Any other relevant information"
+      placeholder: "Optional notes or comments"
+    validations:
+      required: false
