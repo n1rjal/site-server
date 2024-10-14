@@ -14,8 +14,6 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
 
 load_dotenv()
 
@@ -27,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-6myuk3r00t60w08gf6!+j(r@s(=y%of)cj6v9^3qi-shk%88#+"
+SECRET_KEY = os.getenv("DJANGO_SECRET")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -51,10 +49,10 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_celery_beat",
     "django_celery_results",
-    
-    #django apps 
+    # django apps
     # todo
-    "todo", 
+    "todo",
+    "newsletter",
 ]
 
 MIDDLEWARE = [
@@ -93,23 +91,24 @@ WSGI_APPLICATION = "core.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    },
-}
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "NAME": os.getenv("DB_NAME"),
-#         "USER": os.getenv("DB_USER"),
-#         "PASSWORD": os.getenv("DB_PASSWORD"),
-#         # Set to empty string for localhost
-#         "HOST": os.getenv("DB_HOST"),
-#         "PORT": os.getenv("DB_PORT"),  # Set to empty string for default
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
 #     },
 # }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        # Set to empty string for localhost
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),  # Set to empty string for default
+    },
+}
 
 
 # Password validation
@@ -136,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kathmandu"
 
 USE_I18N = True
 
@@ -168,27 +167,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
 CELERY_RESULT_BACKEND = "django-db"
 CELERY_CACHE_BACKEND = "django-cache"
-CELERY_TIMEZONE = "Europe/Berlin"
+CELERY_TIMEZONE = "Asia/Kathmandu"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 60 * 60 * 2
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-APP_NAME = "put_your_name-here"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-
-# Sentry Integration. Refer doc for more details: https://docs.sentry.io/platforms/python/integrations/django/
-SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
-if SENTRY_DSN:
-    sentry_sdk.init(
-        dsn=SENTRY_DSN,
-        integrations=[DjangoIntegration()],
-        # Set traces_sample_rate to 1.0 to capture 100% of transactions for tracing.
-        traces_sample_rate=os.environ.get("SENTRY_TRACE_RATE", 1.0),
-        # User data (such as current user id, email address, username)
-        # will be attached to error events.
-        send_default_pii=os.environ.get("SENTRY_SEND_PII", False),
-        # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions.
-        profiles_sample_rate=os.environ.get("SENTRY_PROFILE_RATE", 1.0),
-    )

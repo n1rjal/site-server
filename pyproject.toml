@@ -8,6 +8,10 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 
+[tool.black]
+line-length = 88  # Adjust the line length if necessary
+target-version = ['py311']  # Set your Python version, e.g. py37, py39, etc.
+skip-string-normalization = false  # Use double quotes everywhere
 
 [build-system]
 requires = ["poetry-core"]

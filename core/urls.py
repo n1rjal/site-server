@@ -44,11 +44,10 @@ urlpatterns = [
         include(
             [
                 #
-                #
-                #
                 # v1 urls
                 path("rester/", include("rester.urls")),
                 path("todo/", include(todo_urls)),
+                path("newsletter/", include("newsletter.urls")),
             ]
         ),
     ),
