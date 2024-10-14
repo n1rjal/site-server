@@ -1,5 +1,5 @@
 # Djate
-| Pronounced झाटे
+| acronym for Django Awesome Template 
 
 ## What is Djate?
 Djate is a simple yet effective Django template that is beginner-friendly and intended for production use (in future)
