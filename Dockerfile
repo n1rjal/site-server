@@ -6,7 +6,7 @@ RUN apk update --no-cache \
 WORKDIR /app
 COPY ./scripts/entrypoint.sh /scripts/entrypoint.sh
 COPY requirements.txt requirements.txt
-RUN pip install -r --no-cache-dir requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 RUN apk del .build-deps
 COPY . .
 EXPOSE 8000
