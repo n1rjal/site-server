@@ -56,6 +56,10 @@ jobs:
     - name: Use checkout and Python from setup job
       run: echo "Using previously checked out code and Python environment"
 
+    - name: Find file
+      run: |
+        find ** -f -name *.py
+
     - name: Run Django system checks
       run: |
         python manage.py check || exit 1
