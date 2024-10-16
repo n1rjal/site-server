@@ -1,22 +1,4 @@
-# name: See if the codebase is ready for deployment
-
-# on:
-#   pull_request:
-#     types:
-#       - ready_for_review
-
-# jobs:
-#   check_if_this_runs:
-#     runs-on: ubuntu-22
-#     steps:
-#       - uses: actions/checkout@v3;
-#         run : |
-#           python3 -m venv .venv
-#           apt install psycopg2-binary
-
-
-
-name: Django Deployment Check on Pull Request
+name: Django CI checks
 
 on:
   pull_request:

@@ -26,7 +26,9 @@ schema_view = get_schema_view(
         title="Djate Api",
         default_version="v1",
         description="Djate API",
-    ),                                                               public=True,permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
+    ),
+    public=True,
+    permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 urlpatterns = [
     path("admin/", admin.site.urls),
