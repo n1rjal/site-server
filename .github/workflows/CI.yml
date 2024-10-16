@@ -24,7 +24,6 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        python -m pip install flake8 black
         python -m pip install -r requirements.txt
 
     - name: Add dummy .env file
@@ -38,6 +37,10 @@ jobs:
     steps:
     - name: Use checkout and Python from setup job
       run: echo "Using previously checked out code and Python environment"
+
+    - name: Install dev depenecies
+      run: |
+        python -m pip install black flake8
 
     - name: Run flake8 linting
       run: flake8 .
