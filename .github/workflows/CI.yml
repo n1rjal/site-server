@@ -63,5 +63,6 @@ jobs:
         echo "found_files=$found_files" >> $GITHUB_OUTPUT
 
     - name: Run Django system checks
+      working-directory: repo  # Specify the correct working directory
       run: |
         python manage.py check || exit 1
