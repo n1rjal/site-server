@@ -35,4 +35,4 @@ jobs:
 
     - name: Run check in django
       run : |
-        python3 manange.py check || exit 1
+        python manage.py check || exit 1
