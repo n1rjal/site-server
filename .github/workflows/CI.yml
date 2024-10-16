@@ -54,13 +54,11 @@ jobs:
       run: echo "Using previously checked out code and Python environment"
 
     - name: Add dummy .env file
-      working-directory: site-server
       run: |
         cp env.example .env
 
     
 
     - name: Run Django system checks
-      working-directory: site-server  # Specify the correct working directory
       run: |
         python manage.py check || exit 1
