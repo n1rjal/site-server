@@ -2,11 +2,11 @@
 name = "djate"
 version = "0.1.0"
 description = ""
-authors = ["n1rjal <nirjalpaudel54312@gmail.com>"]
+authors = ["n1rjal <!-- <nirjalpaudel54312@gmail.com> -->"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 amqp = "5.2.0"
 asgiref = "3.8.1"
 attrs = "24.2.0"
@@ -57,9 +57,10 @@ vine = "5.1.0"
 wcwidth = "0.2.13"
 
 [tool.black]
-line-length = 88  # Adjust the line length if necessary
+line-length = 79  # Adjust the line length if necessary
 target-version = ['py311']  # Set your Python version, e.g. py37, py39, etc.
 skip-string-normalization = false  # Use double quotes everywhere
+
 
 [build-system]
 requires = ["poetry-core"]
