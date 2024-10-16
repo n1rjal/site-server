@@ -1,4 +1,4 @@
-name: Django CI lint and formatting checks
+name: Django CI checks
 
 on:
   pull_request:
@@ -23,8 +23,16 @@ jobs:
         python -m pip install -r requirements.txt
 
 
+    - name: Add dummy .env file
+      run: |
+        cp env.example .env
+
     - name: Run flake8 linting
       run: flake8 .
 
     - name: Run black
       run: black . --check
+
+    - name: Run check in django
+      run : |
+        python manage.py check || exit 1
