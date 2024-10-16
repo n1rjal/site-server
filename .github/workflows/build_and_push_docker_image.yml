@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - main  # Change this to your default branch if needed
-  pull_request:
-    branches:
-      - main  # Change this to your default branch if needed
 
 jobs:
   build_and_push:
