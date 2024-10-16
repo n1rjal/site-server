@@ -1,4 +1,4 @@
-name: Django CI lint and formatting checks
+name: Django simple run check
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
 jobs:
   # this job will fail if the code doesnot start
   # preventing some silly errors
-  check_linting:
+  deployment_checking:
     runs-on: ubuntu-latest
 
     steps:
