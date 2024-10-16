@@ -58,7 +58,7 @@ jobs:
 
     - name: Find file
       run: |
-        find ** -f -name *.py
+        find . -type f -name "*.py"
 
     - name: Run Django system checks
       run: |
