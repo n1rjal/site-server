@@ -55,10 +55,12 @@ jobs:
     steps:
     - name: Use checkout and Python from setup job
       run: echo "Using previously checked out code and Python environment"
-
-    - name: Find file
+    
+    - name: Find Python files
+      id: find-files
       run: |
-        echo $(ls -a)
+        found_files=$(find . -type f -name "*.py")
+        echo "found_files=$found_files" >> $GITHUB_OUTPUT
 
     - name: Run Django system checks
       run: |
