@@ -54,7 +54,7 @@ body:
     id: drawbacks
     attributes:
       label: "Drawbacks"
-      description: mention the drawbacks/impacts of your feature request if there exist any?
+      description: Mention the drawbacks/impacts of your feature request if there exist any?
       placeholder: Identify the drawbacks and impacts while being neutral on your feature request
     validations:
       required: false
