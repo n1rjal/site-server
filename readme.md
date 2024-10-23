@@ -37,12 +37,18 @@ The GNOME Nepal backend server project is intended to make Django app setup and 
 
 Djate is an integral part of the GNOME Nepal backend server. It serves as a simple and efficient Django template to assist in creating backend services. Djate focuses on eliminating the complexity of setting up essential components such as `Django REST Framework`, `Celery`, `celery-backend`, `flower` and `Redis` by automating these tasks through a single command.
 
+### Code Architecture
+
+Djate follows a standard Django project structure with `apps` and `manage.py` in the root directory. Each app contains components such as `views.py`, `models.py`, and `urls.py`, while Celery tasks are defined in `tasks.py` for each application.
+
+The code architecture leverages Django REST Framework (DRF) generics and viewsets for building APIs efficiently, ensuring modularity and efficiency in development.
+
 
 ### Physical Architecture
 
 The physical architecture of Djate is designed to handle task management and background processes efficiently using Redis and Celery. Below is the architecture diagram for how tasks are processed within the Djate setup:
 
-![Physical architecture of Djate](https://github.com/Sailesh-Singh/site-server/raw/main/assets/physical_architecture.jpg)  
+![Physical architecture of Djate](https://github.com/Sailesh-Singh/site-server/raw/main/assets/physical_architecture.jpg)
 *Fig: The architecture includes Django for the web layer, Redis for the message queue, Celery for task processing, and Flower for task monitoring.*
 
 ### Webserver
@@ -61,7 +67,7 @@ Redis is used as the message queue for Celery, managing background tasks efficie
 
 Flower is included for monitoring Celery tasks, accessible at `http://localhost:7777` using:
 
-- **Username:** admin  
+- **Username:** admin
 - **Password:** pswd
 
 ## Features
@@ -74,6 +80,8 @@ Djate simplifies Django app setup by integrating:
 - **Redis**: As a message broker for Celery.
 - **Flower**: A web-based tool for monitoring Celery tasks.
 - **Docker**: Used to containerize the application for easy deployment and testing.
+
+
 
 ## Getting Started
 
@@ -94,7 +102,7 @@ To get started with Djate:
 
 3. **Open your browser at** `http://localhost:8000` **to view the web app.**
 
-4. **Access Flower for task monitoring at** `http://localhost:7777` **using the default credentials:**
+4. **Access Flower for task monitoring at** `http://localhost:7777` **using the default credentials:[Only when you run via docker compose]**
    - **Username**: `admin`
    - **Password**: `pswd`
 
@@ -111,12 +119,6 @@ As part of the GNOME Nepal backend server, we are planning to incorporate the fo
 - [ ] **Member Lookup**: Ability for staff contributors to look up members.
 - [ ] **Blog Submission**: Contributors can submit blogs, with super admins verifying content.
 
-## Code Architecture
-
-Djate follows a standard Django project structure with `apps` and `manage.py` in the root directory. Each app contains components such as `views.py`, `models.py`, and `urls.py`, while Celery tasks are defined in `tasks.py` for each application. 
-
-The code architecture leverages Django REST Framework (DRF) generics and viewsets for building APIs efficiently, ensuring modularity and efficiency in development.
-
 ### How to Contribute
 We welcome contributions to enhance this project. Whether you're fixing bugs, adding new features, or improving documentation, your help is appreciated.
 To contribute to this project, follow these steps:
@@ -127,7 +129,7 @@ To contribute to this project, follow these steps:
 4. **Push your branch** to your forked repository.
 5. **Submit a pull request** detailing your changes.
 
-*(Note: Before contributing read the detailed [guidelines]() for contributions)*
+*(Note: Before contributing read the detailed [guidelines](CONTRIBUTING.md) for contributions)*
 
 
 ## License
