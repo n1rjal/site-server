@@ -14,12 +14,9 @@
     src="https://github.com/GNOME-Nepal/site-server/workflows/GNOME%20server%20CI%20workflow/badge.svg?branch=main"
     alt="Build"
   /></a>
-
+</p>
 
 #
-
-
-
 
 # GNOME Nepal Backend Server
 
@@ -80,7 +77,6 @@ Djate simplifies Django app setup by integrating:
 - **Redis**: As a message broker for Celery.
 - **Flower**: A web-based tool for monitoring Celery tasks.
 - **Docker**: Used to containerize the application for easy deployment and testing.
-
 
 
 ## Getting Started

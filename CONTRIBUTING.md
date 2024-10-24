@@ -37,12 +37,13 @@ You can contribute in several ways:
    git clone https://github.com/GNOME-Nepal/site-server.git
    cd site-server
    ```
+   
+3. **Setup env**
 
-3. Setup env
-Set up environment variables env by copying the env.example file and updating its entries to match your local settings.
-```bash
-cp env.example .env
-```
+   Set up environment variables env by copying the env.example file and updating its entries to match your local settings.
+   ```bash
+   cp env.example .env
+   ```
 
 4. **Set up and source python virtual environment**
    ```bash
