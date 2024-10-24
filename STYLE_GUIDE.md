@@ -71,16 +71,18 @@ docs/improve-readme
 
 Consistent code formatting improves readability and maintainability. Follow these rules:
 
-Use [black](https://black.readthedocs.io/en/stable/) for automatic code formatting.
-   -Default configuration with `max_line_length=79` and double quotes.
-  -Target Python 3.11 compatibility.
+- Use [black](https://black.readthedocs.io/en/stable/) for automatic code formatting.
+  - Default configuration with `max_line_length=79` and double quotes.
+  - Target Python 3.11 compatibility.
+- Use [flake8](https://flake8.pycqa.org/) for linting to ensure code quality.
+  - Run `flake8` to catch unused variables and other issues.
+  - Check for adherence to PEP 8 and best practices.
 
-Use [flake8](https://flake8.pycqa.org/) for linting to ensure code quality.
-   -Run `flake8` to catch unused variables and other issues.
-   -Check for adherence to PEP 8 and best practices.
+Before pushing your code, run the following commands:
 
-Before pushing your code, run the following commansd:
+```bash
 python3 -m black .  # Formats code
 python3 -m flake8   # Runs lint checks
+```
 
 By following this style guide, you contribute to a consistent and maintainable codebase, making it easier for everyone to collaborate and improve the project. Thank you for your contributions!
