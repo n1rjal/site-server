@@ -76,7 +76,7 @@ Consistent code formatting improves readability and maintainability. Follow thes
   - Target Python 3.11 compatibility.
 - Use [flake8](https://flake8.pycqa.org/) for linting to ensure code quality.
   - Run `flake8` to catch unused variables and other issues.
-  - Check for adherence to PEP 8 and best practices.
+  - Check for adherence to [PEP 8](https://peps.python.org/pep-0008/) and best practices.
 
 Before pushing your code, run the following commands:
 
