@@ -49,6 +49,7 @@ urlpatterns = [
                 #
                 # v1 urls
                 path("newsletter/", include("newsletter.urls")),
+                path("faqs/", include("faq.urls")),
             ]
         ),
     ),
