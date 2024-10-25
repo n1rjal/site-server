@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     # todo
     "newsletter",
     "faq",
+    "event",
 ]
 
 MIDDLEWARE = [
