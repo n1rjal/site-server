@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # django apps
     # todo
     "newsletter",
+    "faq",
 ]
 
 MIDDLEWARE = [
