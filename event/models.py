@@ -97,3 +97,17 @@ class Schedule(models.Model):
 
     def __str__(self):
         return f"Schedule from {self.start_time} to {self.end_time}"
+
+
+class Gallery(models.Model):
+    event = models.ForeignKey(
+        Event,
+        null=False,
+        blank=False,
+        on_delete=models.CASCADE,
+    )
+    caption = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=False, blank=False)
+
+    def __str__(self):
+        return str(self.event)
