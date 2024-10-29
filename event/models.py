@@ -110,6 +110,7 @@ class EventImage(models.Model):
     caption = models.TextField(null=True, blank=True)
     image = models.ImageField(null=False, blank=False)
     position = models.IntegerField(default=1)
+    published = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.event)
