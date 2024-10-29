@@ -1,4 +1,6 @@
 from django.db import models
+from uuid import uuid4
+from django.utils.text import slugify
 
 
 class EventType(models.Model):
@@ -8,8 +10,31 @@ class EventType(models.Model):
         return self.name
 
 
+class EventLocation(models.Model):
+    name = models.CharField(max_length=150, blank=False, null=False)
+    # it is nullable as the location may be not always findable
+    google_maps_location = models.URLField(
+        max_length=500, blank=True, null=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class HotTopic(models.Model):
+    name = models.CharField(max_length=100, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+
 # Create your models here.
 class Event(models.Model):
+    slug = models.SlugField(
+        max_length=350,
+        primary_key=True,
+        editable=False,
+    )
     title = models.CharField(max_length=400, blank=False, null=False)
     start_date = models.DateField(blank=False, null=False)
     end_date = models.DateField(blank=False, null=False)
@@ -44,31 +69,18 @@ class Event(models.Model):
     )
 
     hot_topics = models.ManyToManyField(
-        "HotTopic",
+        HotTopic,
         related_name="events",
         related_query_name="events",
     )
 
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title) + "-" + str(uuid4())[0:8]
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
-
-
-class EventLocation(models.Model):
-    name = models.CharField(max_length=150, blank=False, null=False)
-    # it is nullable as the location may be not always findable
-    google_maps_location = models.URLField(
-        max_length=500, blank=True, null=True
-    )
-
-    def __str__(self):
-        return self.name
-
-
-class HotTopic(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
-
-    def __str__(self):
-        return self.name
 
 
 class Speaker(models.Model):
@@ -82,7 +94,7 @@ class Speaker(models.Model):
 
 
 class Schedule(models.Model):
-
+    title = models.CharField(max_length=250, blank=True, null=True)
     start_time = models.CharField(max_length=100)
     end_time = models.CharField(max_length=100)
     # emojis have 2 length by default
@@ -93,7 +105,11 @@ class Schedule(models.Model):
     )
     speakers = models.ManyToManyField(Speaker)
     # location can be like "In building A, room number 5 etc"
-    location = models.CharField(max_length=100, blank=True, null=True)
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="schedules",
+    )
 
     def __str__(self):
         return f"Schedule from {self.start_time} to {self.end_time}"
@@ -106,6 +122,8 @@ class EventImage(models.Model):
         null=False,
         blank=False,
         on_delete=models.CASCADE,
+        related_name="event_images",
+        to_field="slug",
     )
     caption = models.TextField(null=True, blank=True)
     image = models.ImageField(null=False, blank=False)
