@@ -97,3 +97,23 @@ class Schedule(models.Model):
 
     def __str__(self):
         return f"Schedule from {self.start_time} to {self.end_time}"
+
+
+class EventImage(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    event = models.ForeignKey(
+        Event,
+        null=False,
+        blank=False,
+        on_delete=models.CASCADE,
+    )
+    caption = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=False, blank=False)
+    position = models.IntegerField(default=1)
+    published = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.event)
+
+    class Meta:
+        ordering = ["position"]
