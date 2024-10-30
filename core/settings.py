@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("DJANGO_SECRET")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DJANGO_DEBUG", "FALSE") == "TRUE"
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
 
 
 # Application definition
@@ -185,3 +185,75 @@ STORAGES = {
 
 STATIC_ROOT = os.path.join(BASE_DIR, os.getenv("STATIC_ROOT", "staticfiles"))
 MEDIA_ROOT = os.path.join(BASE_DIR, os.getenv("MEDIA_ROOT", "media"))
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        # Console output handler
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+        # File handler for synchronization log with dynamic filename
+        "file_sync": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "./logs/custom.log",
+            "when": "D",  # Rotate daily
+            "interval": 1,  # Every 1 day
+            "backupCount": 5,  # Keep 5 backups
+            "formatter": "verbose",
+        },
+        # File handler for SQL log with dynamic filename and daily rotation
+        "file_sql": {
+            "level": "DEBUG",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "./logs/sql.log",
+            "when": "D",  # Rotate daily
+            "interval": 1,  # Every 1 day
+            "backupCount": 5,  # Keep 5 backups
+            "formatter": "verbose",
+        },
+        # File handler for Django standard error logs
+        "file_django_error": {
+            "level": "ERROR",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": "./logs/django_error.log",
+            "when": "D",  # Rotate daily
+            "interval": 1,  # Every 1 day
+            "backupCount": 5,  # Keep 5 backups
+            "formatter": "django.server",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s [%(levelname)s] %(message)s",
+        },
+        "django.server": {
+            "()": "django.utils.log.ServerFormatter",
+            "format": "[{server_time}] {message}",
+            "style": "{",
+        },
+    },
+    "loggers": {
+        # Logger for synchronization system
+        "CUSTOM_LOG": {
+            "handlers": ["file_sync", "console"] if DEBUG else ["file_sync"],
+            "level": "INFO" if DEBUG else "CRITICAL",
+            "propagate": False,
+        },
+        # Logger for SQL queries
+        "django.db.backends": {
+            "handlers": ["file_sql"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+        # Logger for Django standard error
+        "django.request": {
+            "handlers": ["file_django_error"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}

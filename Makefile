@@ -9,7 +9,7 @@ create_admin:
 	DJANGO_SUPERUSER_USERNAME=$(DJANGO_ADMIN_USERNAME) \
 	DJANGO_SUPERUSER_EMAIL=$(DJANGO_ADMIN_EMAIL) \
 	DJANGO_SUPERUSER_PASSWORD=$(DJANGO_ADMIN_PASSWORD) \
-	python manage.py createsuperuser --noinput || echo "Superuser creation failed."
+	python manage.py createsuperuser --noinput || echo "Superuser creation failed." && echo "Super user $(DJANGO_ADMIN_USERNAME) created successfully"
 
 build_dev:
 	docker buildx build --target development -t djate:dev .
@@ -22,6 +22,7 @@ freeze:
 
 dev:
 	python manage.py migrate --noinput
+	make create_admin
 	python manage.py runserver 0.0.0.0:8000
 
 cleanup:
@@ -29,7 +30,7 @@ cleanup:
 
 prod:
 	python manage.py migrate --noinput
-	python manage.py collectstatic --no-input --no-post-process
+	python manage.py collectstatic --no-input
 	make create_admin
 	python -m gunicorn core.wsgi:application \
 		--bind 0.0.0.0:8000 -w 2 --log-level info \
