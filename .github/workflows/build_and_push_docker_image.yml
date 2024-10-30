@@ -28,7 +28,6 @@ jobs:
           docker compose build app
           docker tag gnome_backend:nightly ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly
           docker push ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly
-          docker push ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly
 
 
       # Step 4: Sync Worker Image
@@ -36,5 +35,4 @@ jobs:
         run: |
           docker compose build worker_beat
           docker tag gnome-worker-beat:nightly ghcr.io/$REPOSITORY_LC/gnome-nepal-worker-beat:nightly
-          docker push ghcr.io/$REPOSITORY_LC/gnome-nepal-worker-beat:nightly
           docker push ghcr.io/$REPOSITORY_LC/gnome-nepal-worker-beat:nightly
