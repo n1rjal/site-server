@@ -2,6 +2,9 @@ init:
 	pip freeze | grep poetry || pip install poetry
 	# Activate poetry shell
 	poetry install || echo "Poetry environment not found."
+	# make reqyured directory
+	mkdir staticfiles logs
+	touch logs/django_error.log
 	# Copy environment files
 	cp env.example .env && cp env.example docker.env
 
