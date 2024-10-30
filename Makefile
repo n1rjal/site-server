@@ -15,10 +15,10 @@ create_admin:
 	python manage.py createsuperuser --noinput || echo "Superuser creation failed." && echo "Super user $(DJANGO_ADMIN_USERNAME) created successfully"
 
 build_dev:
-	docker buildx build --target development -t djate:dev .
+	docker buildx build --target development -t gnome_nepal:dev .
 
 build:
-	docker buildx build --target production -t djate:latest .
+	docker buildx build --target production -t gnome_nepal:latest .
 
 freeze:
 	rm requirements.txt && pip freeze > requirements.txt
@@ -39,3 +39,11 @@ prod:
 		--bind 0.0.0.0:8000 -w 2 --log-level info \
 		--access-logfile ./logs/gunicorn.access.log \
 		--error-logfile ./logs/gunicorn.error.log
+
+sync_backend_image:
+	# this will be called in the github workflow
+
+
+
+sync_worker_image:
+	# will be used in github workflow
