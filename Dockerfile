@@ -1,14 +1,35 @@
-FROM python:3.11-alpine
+FROM python:3.11-slim AS base
+
+
+# Create a non-root user and group
+RUN groupadd -r gnome_group && useradd -r -g gnome_group -d /app -s /bin/bash gnome_user
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
-RUN apk update --no-cache \
-    && apk add build-base postgresql-dev libpq --no-cache --virtual .build-deps \
-    && pip install --no-cache-dir --upgrade pip
+
 WORKDIR /app
-COPY ./scripts/entrypoint.sh /scripts/entrypoint.sh
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    pkg-config build-essential libpq-dev ca-certificates  \
+    && pip install --no-cache-dir --upgrade pip \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-RUN apk del .build-deps
+RUN pip install --no-cache-dir --no-compile -r requirements.txt
 COPY . .
+
+RUN chmod +x Makefile
+RUN chown -R gnome_user:gnome_group /app
+USER gnome_user
+
+FROM base AS worker
+
+
+FROM base AS development
 EXPOSE 8000
-RUN chmod +x /scripts/entrypoint.sh
-CMD ["sh", "/scripts/entrypoint.sh"]
+CMD ["make", "dev"]
+
+FROM base AS production
+EXPOSE 8000
+CMD ["make", "prod"]
