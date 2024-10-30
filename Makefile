@@ -15,10 +15,10 @@ create_admin:
 	python manage.py createsuperuser --noinput || echo "Superuser creation failed." && echo "Super user $(DJANGO_ADMIN_USERNAME) created successfully"
 
 build_dev:
-	docker buildx build --target development -t djate:dev .
+	docker buildx build --target development -t gnome_nepal:dev .
 
 build:
-	docker buildx build --target production -t djate:latest .
+	docker buildx build --target production -t gnome_nepal:latest .
 
 freeze:
 	rm requirements.txt && pip freeze > requirements.txt
