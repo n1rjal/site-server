@@ -22,7 +22,7 @@ jobs:
     - name: Make required directories
       run: |
         mkdir logs staticfiles
-        cat logs/django_error.log
+        touch logs/django_error.log
 
     - name: Install dependencies
       run: |
