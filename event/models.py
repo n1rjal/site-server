@@ -96,6 +96,7 @@ class Speaker(models.Model):
 
 class Schedule(models.Model):
     title = models.CharField(max_length=250, blank=True, null=True)
+    description = models.TextField(blank=False, null=True)
     start_time = models.CharField(max_length=100)
     end_time = models.CharField(max_length=100)
     # emojis have 2 length by default
