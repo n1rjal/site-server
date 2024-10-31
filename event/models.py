@@ -88,6 +88,7 @@ class Speaker(models.Model):
     profession = models.CharField(max_length=255)
     twitter = models.URLField(max_length=255)
     linkedin = models.URLField(max_length=255)
+    description = models.TextField(blank=False, null=True)
 
     def __str__(self):
         return self.name
