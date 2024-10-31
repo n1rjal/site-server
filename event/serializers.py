@@ -51,7 +51,7 @@ class EventSerializer(serializers.ModelSerializer):
             list{dict]: A list of dictonaries, each containing
                 - 'caption' (str): The caption of the image.
                 - 'images' (str): The URL of image.
-                - 'created_at' (datetime): The timestamp when the image was created.
+                - 'created_at' (datetime): The timestamp of image creation
         """
         images = []
         for img in obj.event_images.filter(published=True).order_by(
