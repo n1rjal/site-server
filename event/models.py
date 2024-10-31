@@ -77,6 +77,15 @@ class Event(models.Model):
     )
 
     def clean_start_date(self):
+        """
+        Validate the start date if it is in the past
+
+        Raises:
+            ValidationError: If the start date is in the past
+
+        Returns:
+            datetime: The valid start date
+        """
         date_now = datetime.now().date()  # Convert to date
 
         if self.start_date.date() < date_now:  # Convert to date for comparison
@@ -85,6 +94,15 @@ class Event(models.Model):
         return self.start_date
 
     def clean_end_date(self):
+        """
+        Validate the end date if it is in the past
+
+        Raises:
+            ValidationError: If the end date is in the past
+
+        Returns:
+            datetime: The valid end date
+        """
         date_now = datetime.now().date()  # Convert to date
 
         if self.end_date.date() < date_now:  # Convert to date for comparison
@@ -93,6 +111,15 @@ class Event(models.Model):
         return self.end_date
 
     def clean_registration_deadline(self):
+        """
+        Validate the end date if it is in the past
+
+        Raises:
+            ValidationError: If the end date is in the past
+
+        Returns:
+            datetime: The valid end date
+        """
         date_now = datetime.now().date()  # Convert to date
 
         if (
@@ -103,19 +130,27 @@ class Event(models.Model):
         return self.registration_deadline
 
     def clean(self):
+        """
+        Validate if the values are righly related to each other according
+        to business later.
+
+        Raises:
+            ValidationError:
+                - If start_date is greater than end date
+                - If Registration deadline is greater than start_date
+
+        Returns:
+            None
+
+
+        """
         super().clean()  # Ensure parent class's clean method is called
-        date_now = datetime.now()
 
         # Check if start_date is greater than end_date
         if self.start_date > self.end_date:
             raise ValidationError("Start date must be less than end date.")
 
         if self.registration_deadline:
-
-            if self.registration_deadline.date() < date_now.date():
-                raise ValidationError(
-                    "Registration deadline cannot be in past"
-                )
 
             # Check if registration_deadline is greater than start_date
             if self.registration_deadline.date() > self.start_date:
@@ -124,6 +159,15 @@ class Event(models.Model):
                 )
 
     def save(self, *args, **kwargs):
+        """
+        We are overriding events save model
+        so that we can create slug for the model once
+        created.
+
+        The slug is not changeable,
+        if slug is changed, URL will be changed as well
+        so for that reason, the slug will not be changed
+        """
         if not self.slug:
             self.slug = slugify(self.title) + "-" + str(uuid4())[0:8]
         super().save(*args, **kwargs)

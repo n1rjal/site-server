@@ -42,6 +42,17 @@ class EventSerializer(serializers.ModelSerializer):
     images = serializers.SerializerMethodField(read_only=True)
 
     def get_images(self, obj):
+        """
+        Gets the published images of the event
+
+        Args:
+            obj(Event): The event object
+        Returns:
+            list{dict]: A list of dictonaries, each containing
+                - 'caption' (str): The caption of the image.
+                - 'images' (str): The URL of image.
+                - 'created_at' (datetime): The timestamp when the image was created.
+        """
         images = []
         for img in obj.event_images.filter(published=True).order_by(
             "position"
