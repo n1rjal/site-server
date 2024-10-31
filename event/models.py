@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from uuid import uuid4
+from datetime import datetime
 from django.utils.text import slugify
 
 
@@ -73,6 +75,53 @@ class Event(models.Model):
         related_name="events",
         related_query_name="events",
     )
+
+    def clean_start_date(self):
+        date_now = datetime.now().date()  # Convert to date
+
+        if self.start_date.date() < date_now:  # Convert to date for comparison
+            raise ValidationError("Start date cannot be in the past")
+
+        return self.start_date
+
+    def clean_end_date(self):
+        date_now = datetime.now().date()  # Convert to date
+
+        if self.end_date.date() < date_now:  # Convert to date for comparison
+            raise ValidationError("End date cannot be in the past")
+
+        return self.end_date
+
+    def clean_registration_deadline(self):
+        date_now = datetime.now().date()  # Convert to date
+
+        if (
+            self.registration_deadline.date() < date_now
+        ):  # Convert to date for comparison
+            raise ValidationError("Registration date cannot be in the past")
+
+        return self.registration_deadline
+
+    def clean(self):
+        super().clean()  # Ensure parent class's clean method is called
+        date_now = datetime.now()
+
+        # Check if start_date is greater than end_date
+        if self.start_date > self.end_date:
+            raise ValidationError("Start date must be less than end date.")
+
+        if self.registration_deadline:
+
+            if self.registration_deadline.date() < date_now.date():
+                raise ValidationError(
+                    "Registration deadline cannot be in past"
+                )
+
+            # Check if registration_deadline is greater than start_date
+            if self.registration_deadline.date() > self.start_date:
+                raise ValidationError(
+                    "Registration deadline must be less than start date."
+                )
 
     def save(self, *args, **kwargs):
         if not self.slug:
