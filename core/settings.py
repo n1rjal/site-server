@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "newsletter",
     "faq",
     "event",
+    "nested_admin",
 ]
 
 MIDDLEWARE = [
@@ -115,21 +116,13 @@ AUTH_PASSWORD_VALIDATORS = [
         ),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation." "MinimumLengthValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation." "MinimumLengthValidator"),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "CommonPasswordValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation." "CommonPasswordValidator"),
     },
     {
-        "NAME": (
-            "django.contrib.auth.password_validation."
-            "NumericPasswordValidator"
-        ),
+        "NAME": ("django.contrib.auth.password_validation." "NumericPasswordValidator"),
     },
 ]
 
@@ -261,4 +254,8 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+
+JAZZMIN_SETTINGS = {
+    "show_ui_builder": True,
 }
