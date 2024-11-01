@@ -31,7 +31,11 @@ schema_view = get_schema_view(
     permission_classes=(permissions.IsAuthenticatedOrReadOnly,),
 )
 urlpatterns = [
+    # for admin panel
     path("admin/", admin.site.urls),
+    # for health check
+    path("health/", include("health.urls")),
+    # for docs
     path(
         "swagger/",
         schema_view.with_ui("swagger", cache_timeout=0),
