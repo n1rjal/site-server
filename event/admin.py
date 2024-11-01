@@ -66,6 +66,14 @@ class EventModelAdmin(NestedModelAdmin):
         ) 
     get_rsvp_url.short_description = "RSVP URL"
 
+    def get_rsvp_url(self, obj):
+        return format_html(
+            '<a href="{}" target="_blank">' + obj.title + "</a>",
+            obj.rsvp_url,
+        )
+
+    get_rsvp_url.short_description = "RSVP URL"
+
 
 @admin.register(models.Speaker)
 class SpeakersAdmin(admin.ModelAdmin):
