@@ -5,7 +5,6 @@ from django import forms
 from nested_admin import (
     NestedStackedInline,
     NestedModelAdmin,
-    NestedTabularInline,
 )
 from django.utils.html import format_html
 
@@ -37,14 +36,14 @@ class EventAdminForms(forms.ModelForm):
             "end_date": "This is the date the event will end",
             "description": "This is the description of the event",
             "rsvp_url": "This is the link to the RSVP page",
-            "add_to_calender_url": "This is the link to add the event to your calendar",
+            "add_to_calender_url": "Add the event to your calendar",
             "is_draft": "This is the status of the event",
             "max_capacity": "This is the maximum capacity of the event",
             "price": "This is the price of the event",
             "registration_deadline": "This is the deadline for registration",
-            "event_type": "what type of event is this or What the event is about",
+            "event_type": "What type of event is this",
             "location": "This is the location of the event",
-            "hot_topics": "These are the hot topics of the events or keywords describing the event",
+            "hot_topics": "Keywords describing the event",
         }
 
 
