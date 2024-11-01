@@ -58,12 +58,21 @@ class EventModelAdmin(NestedModelAdmin):
         EventImagesInline,
     ]
     autocomplete_fields = ["location", "event_type", "hot_topics"]
-     
+
     def get_rsvp_url(self, obj):
         return format_html(
-            '<a href="{}" target="_blank">'+ obj.title+'</a>',
+            '<a href="{}" target="_blank">' + obj.title + "</a>",
             obj.rsvp_url,
-        ) 
+        )
+
+    get_rsvp_url.short_description = "RSVP URL"
+
+    def get_rsvp_url(self, obj):
+        return format_html(
+            '<a href="{}" target="_blank">' + obj.title + "</a>",
+            obj.rsvp_url,
+        )
+
     get_rsvp_url.short_description = "RSVP URL"
 
     def get_rsvp_url(self, obj):
