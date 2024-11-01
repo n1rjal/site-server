@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "newsletter",
     "faq",
     "event",
+    "nested_admin",
 ]
 
 MIDDLEWARE = [
@@ -261,4 +262,8 @@ LOGGING = {
             "propagate": False,
         },
     },
+}
+
+JAZZMIN_SETTINGS = {
+    "show_ui_builder": True,
 }
