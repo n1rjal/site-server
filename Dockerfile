@@ -32,21 +32,22 @@ COPY . .
 # Create a non-root user and adjust permissions
 RUN groupadd -r gnome_group && \
     useradd -r -g gnome_group -d /app -s /sbin/nologin gnome_user && \
-    chown -R gnome_user:gnome_group /app
+    chown -R og+rw gnome_user:gnome_group /app
 
 # Switch to non-root user
 USER gnome_user
-
-# Define the worker stage
-FROM base AS worker
-# (Add any worker-specific configurations here)
-
-# Define the development stage
-FROM base AS development
-EXPOSE 8000
-CMD ["make", "dev"]
-
-# Define the production stage
-FROM base AS production
 EXPOSE 8000
 CMD ["make", "prod"]
+
+# # Define the worker stage
+# FROM base AS worker
+# # (Add any worker-specific configurations here)
+
+# # Define the development stage
+# FROM base AS development
+# EXPOSE 8000
+# CMD ["make", "dev"]
+
+# Define the production stage
+# FROM base AS production
+
