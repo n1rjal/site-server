@@ -19,9 +19,9 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --no-compile -r requirements.txt
 COPY . .
 
-RUN chown -R 755 gnome_user:gnome_group /app
+RUN chown -R 755 gnome_user:gnome_group /usr/src/
 RUN mkdir logs
-RUN chown -R 755 gnome_user:gnome_group /app/logs
+RUN chown -R 755 gnome_user:gnome_group /usr/src/logs/
 USER gnome_user
 
 FROM base AS worker
