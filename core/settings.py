@@ -190,7 +190,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, os.getenv("MEDIA_ROOT", "media"))
 
 # Logs
 
-LOG_DIR = BASE_DIR / "logs"
+LOG_DIR = BASE_DIR / os.getenv("LOG_DIR", "logs")
+LOG_DIR = BASE_DIR / os.getenv("LOG_PATH", "logs")
 LOG_DIR.mkdir(exist_ok=True)
 
 LOGGING = {
@@ -205,7 +206,7 @@ LOGGING = {
         "file_sync": {
             "level": "DEBUG",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "./logs/custom.log",
+            "filename": f"./{LOG_DIR}/custom.log",
             "when": "D",  # Rotate daily
             "interval": 1,  # Every 1 day
             "backupCount": 5,  # Keep 5 backups
@@ -215,7 +216,7 @@ LOGGING = {
         "file_sql": {
             "level": "DEBUG",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "./logs/sql.log",
+            "filename": f"./{LOG_DIR}/sql.log",
             "when": "D",  # Rotate daily
             "interval": 1,  # Every 1 day
             "backupCount": 5,  # Keep 5 backups
@@ -225,7 +226,7 @@ LOGGING = {
         "file_django_error": {
             "level": "ERROR",
             "class": "logging.handlers.TimedRotatingFileHandler",
-            "filename": "./logs/django_error.log",
+            "filename": f"./{LOG_DIR}/django_error.log",
             "when": "D",  # Rotate daily
             "interval": 1,  # Every 1 day
             "backupCount": 5,  # Keep 5 backups
