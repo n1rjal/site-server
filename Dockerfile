@@ -8,7 +8,7 @@ RUN groupadd -r gnome_group && useradd -r -g gnome_group -d /app -s /bin/bash gn
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-WORKDIR /app
+WORKDIR /usr/src
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
     pkg-config build-essential libpq-dev ca-certificates  \
@@ -19,10 +19,9 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir --no-compile -r requirements.txt
 COPY . .
 
-RUN chmod +x Makefile
-RUN chown -R gnome_user:gnome_group /app
+RUN chown -R 755 gnome_user:gnome_group /app
 RUN mkdir logs
-RUN chown -R gnome_user:gnome_group /app/logs
+RUN chown -R 755 gnome_user:gnome_group /app/logs
 USER gnome_user
 
 FROM base AS worker
