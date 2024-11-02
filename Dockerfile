@@ -21,6 +21,8 @@ COPY . .
 
 RUN chmod +x Makefile
 RUN chown -R gnome_user:gnome_group /app
+RUN mkdir logs
+RUN chown -R gnome_user:gnome_group /app/logs
 USER gnome_user
 
 FROM base AS worker
