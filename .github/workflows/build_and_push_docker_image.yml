@@ -25,6 +25,7 @@ jobs:
       # Step 3: Sync Backend Image
       - name: Build, Tag, and Push Backend Image
         run: |
+          export DOCKER_DEFAULT_PLATFORM=linux/amd64
           # Build the production image and tag it correctly
           docker build --target  production -t ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly .
           docker push ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly
