@@ -32,6 +32,9 @@ cleanup:
 	## make a cleanup code
 
 prod:
+	python manage.py migrate --noinput
+	python manage.py collectstatic --no-input
+	make create_admin
 	python -m gunicorn core.wsgi:application \
 		--bind 0.0.0.0:8000 -w 2 --log-level info \
 		--access-logfile ./logs/gunicorn.access.log \
