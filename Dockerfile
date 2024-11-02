@@ -1,35 +1,52 @@
-FROM python:3.11-slim AS base
-
-
-# Create a non-root user and group
-RUN groupadd -r gnome_group && useradd -r -g gnome_group -d /app -s /bin/bash gnome_user
+# Use the RHEL 9 Python 3.12 image as the base image
+FROM --platform=linux/amd64 registry.access.redhat.com/rhel9/python-312 as base
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
+# Set the working directory
 WORKDIR /app
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-    pkg-config build-essential libpq-dev ca-certificates  \
-    && pip install --no-cache-dir --upgrade pip \
-    && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt requirements.txt
-RUN pip install --no-cache-dir --no-compile -r requirements.txt
+# Install necessary packages using 'yum' for RHEL-based images
+USER root
+RUN yum update -y && \
+    yum install -y \
+        pkgconfig \
+        gcc \
+        gcc-c++ \
+        make \
+        libpq-devel \
+        openssl \
+        ca-certificates && \
+    yum clean all
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir --no-compile -r requirements.txt
+
+# Copy the application code
 COPY . .
 
-RUN chmod +x Makefile
-RUN chown -R gnome_user:gnome_group /app
+# Create a non-root user and adjust permissions
+RUN groupadd -r gnome_group && \
+    useradd -r -g gnome_group -d /app -s /sbin/nologin gnome_user && \
+    chown -R gnome_user:gnome_group /app
+
+# Switch to non-root user
 USER gnome_user
 
+# Define the worker stage
 FROM base AS worker
+# (Add any worker-specific configurations here)
 
-
+# Define the development stage
 FROM base AS development
 EXPOSE 8000
 CMD ["make", "dev"]
 
+# Define the production stage
 FROM base AS production
 EXPOSE 8000
 CMD ["make", "prod"]

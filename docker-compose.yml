@@ -5,6 +5,7 @@ services:
     build:
       context: .
       target: $DOCKERFILE_TARGET
+    # image: ghcr.io/n1rjal/site-server/gnome-nepal-backend:nightly
     volumes:
       - gnome_data:/app/
       - .:/app

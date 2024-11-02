@@ -1,0 +1,61 @@
+
+schemaVersion: 2.2.0
+metadata:
+  name: gnome-nepal
+  projectType: Python
+  displayName: GnomeNepal in openshift
+  description: |
+    Python is an interpreted, object-oriented, high-level programming language with dynamic semantics.
+    This project is configured to run on OpenShift using a containerized Python environment.
+  language: Python
+  version: 1.0.1
+  provider: Gnome Nepal
+  tags:
+    - Gnome Nepal
+    - django
+    - postgres
+    - djate
+
+
+components:
+  - name: app-deploy
+    kubernetes:
+      uri: openshift/webserver.yaml
+
+  - name: worker-beat-deploy
+    kubernetes:
+      uri: openshift/worker_beat.yaml
+
+  - name: postgres-deploy
+    kubernetes:
+      uri: openshift/postgres.yaml
+
+  - name: openshift-deploy
+    kubernetes:
+      uri: openshift-deploy.yaml
+      endpoints:
+        - name: http-8080
+          targetPort: 8080
+          exposure: public
+          secure: false
+          path: ./openshift/webserver.yaml
+
+
+
+commands:
+  - id: deploy-server
+    apply:
+      component: app-deploy
+
+  - id: deploy-worker-beat
+    apply:
+      component: worker-beat-deploy
+
+  - id: deploy
+    composite:
+      commands:
+        - build-image
+        - deploy-openshift
+      group:
+        kind: deploy
+        isDefault: true

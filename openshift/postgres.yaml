@@ -1,0 +1,89 @@
+
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1  # Change to v1 for Service
+    kind: Service
+    metadata:
+      name: postgres-service
+      labels:
+        app: db  # Added labels for clarity
+    spec:
+      selector:
+        app: db
+      ports:
+        - port: 5432
+          targetPort: 5432
+
+  - apiVersion: apps/v1  # Change back to apps/v1 for Deployment
+    kind: Deployment
+    metadata:
+      name: db-deployment
+      labels:
+        app: db  # Updated label
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          app: db  # Updated to match the pod's labels
+      template:
+        metadata:
+          labels:
+            app: db  # Updated label to match the selector
+        spec:
+            containers:
+              - name: gnome-nepal-postgres  # Name of the container
+                image: registry.redhat.io/rhel8/postgresql-15
+                ports:
+                  - name: http
+                    containerPort: 5432  # PostgreSQL default port
+                env:
+                  #
+                  # POSTGRESQL_USER POSTGRESQL_PASSWORD POSTGRESQL_DATABASE
+                  - name: POSTGRESQL_PASSWORD  # Environment variable for the PostgreSQL password
+                    valueFrom:
+                      secretKeyRef:
+                        name: postgres-secret  # Refers to the Secret for the password
+                        key: password
+                  - name: POSTGRESQL_USER
+                    valueFrom:
+                      secretKeyRef:
+                        name: postgres-secret
+                        key: username
+                  - name: POSTGRESQL_DATABASE
+                    valueFrom:
+                      secretKeyRef:
+                        name: postgres-secret
+                        key: database
+                  - name: PGDATA
+                    value: /var/lib/postgresql/data/pgdata
+                volumeMounts:
+                  - name: pg-volume  # Mount the volume for PostgreSQL data
+                    mountPath: /var/lib/postgresql/data  # Mount path for data storage
+            volumes:
+              - name: pg-volume  # Define the volume to be used by the container
+                persistentVolumeClaim:
+                  claimName: pg-volume  # References the PersistentVolumeClaim (PVC) for storage
+
+  - apiVersion: v1  # PersistentVolumeClaim uses v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: pg-volume
+      labels:
+        app: db
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Changed from 'resource' to 'resources'
+        requests:  # Changed from 'request' to 'requests'
+          storage: 2Gi
+
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: postgres-secret
+    type: Opaque
+    data:
+      password: cG9zdGdyZXMK
+      username: cG9zdGdyZXMK
+      database: cG9zdGdyZXMK
