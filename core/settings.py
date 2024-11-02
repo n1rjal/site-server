@@ -190,7 +190,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, os.getenv("MEDIA_ROOT", "media"))
 
 # Logs
 
-LOG_DIR = BASE_DIR / os.getenv("LOG_DIR", "logs")
 LOG_DIR = BASE_DIR / os.getenv("LOG_PATH", "logs")
 LOG_DIR.mkdir(exist_ok=True)
 
