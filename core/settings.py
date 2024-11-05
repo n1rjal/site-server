@@ -31,7 +31,10 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", "FALSE") == "TRUE"
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1").split(",")
 
-
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "https://nepal.gnome.org").split(",")
+CSRF_COOKIE_SECURE = not DEBUG  # Send cookies over HTTPS in production
+CSRF_COOKIE_SAMESITE = "Lax"   # Restrict cookies to same-site requests
 # Application definition
 
 INSTALLED_APPS = [
