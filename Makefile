@@ -39,3 +39,7 @@ prod:
 		--bind 0.0.0.0:8000 -w 2 --log-level info \
 		--access-logfile ./logs/gunicorn.access.log \
 		--error-logfile ./logs/gunicorn.error.log
+
+sops_encrypt:
+	export SOPS_AGE_RECIPENTS=$(<./.age/public-age-keys.txt)
+	sops --encrypt --age $(SOPS_AGE_RECIPENTS) .openshift/secrets.yaml > .openshift/secrets.enc.yaml
