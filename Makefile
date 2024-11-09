@@ -1,3 +1,5 @@
+SOPS_AGE_KEY_FILE=.age/key.txt
+
 init:
 	pip freeze | grep poetry || pip install poetry
 	# Activate poetry shell
@@ -41,5 +43,7 @@ prod:
 		--error-logfile ./logs/gunicorn.error.log
 
 sops_encrypt:
-	export SOPS_AGE_RECIPENTS=$(<./.age/public-age-keys.txt)
-	sops --encrypt --age $(SOPS_AGE_RECIPENTS) .openshift/secrets.yaml > .openshift/secrets.enc.yaml
+	sops --encrypt ./.openshift/secrets.yaml > ./.openshift/secrets.enc.yaml
+
+sops_decrypt:
+	sops --decrypt ./.openshift/secrets.enc.yaml > ./.openshift/secrets.yaml
