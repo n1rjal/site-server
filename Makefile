@@ -47,3 +47,6 @@ sops_encrypt:
 
 sops_decrypt:
 	sops --decrypt ./.openshift/secrets.enc.yaml > ./.openshift/secrets.yaml
+
+apply_infra:
+	oc apply -f ./.openshift/secrets.yaml -f ./.openshift/server.yaml -f ./.openshift/database.yaml
