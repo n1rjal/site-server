@@ -1,4 +1,8 @@
-FROM python:3.11-slim AS base
+# Specify the platform as an argument
+ARG PLATFORM=linux/arm64
+
+# Base image with specified platform
+FROM --platform=$PLATFORM python:3.11-slim AS base
 
 
 # Create a non-root user and group
