@@ -1,0 +1,184 @@
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: server-service
+      labels:
+        app: gnome-nepal-server
+    spec:
+      selector:
+        app: gnome-nepal-server  # Updated to match Deployment labels
+      ports:
+        - name: http  # Added port name
+          port: 8000
+          targetPort: 8000
+
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: gnome-nepal-server-deployment
+      labels:
+        app: gnome-nepal-server  # Ensured consistency
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: gnome-nepal-server  # Ensured consistency
+      template:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: '*'
+        metadata:
+          labels:
+            app: gnome-nepal-server  # Ensured consistency
+        spec:
+          containers:
+            - name: gnome-nepal-server
+              image: ghcr.io/gnome-nepal/site-server/gnome-nepal-backend:nightly
+              imagePullPolicy: IfNotPresent
+              ports:
+                - name: http
+                  containerPort: 8000
+                  appProtocol: http
+              env:
+                - name: DJANGO_SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_SECRET_KEY
+                - name: CACHE_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: CACHE_HOST
+                - name: CELERY_BROKER_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: CELERY_BROKER_URL
+                - name: DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_NAME
+                - name: DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_USER
+                - name: DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_PASSWORD
+                - name: DB_HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_HOST
+                - name: DB_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_PORT
+                - name: SENTRY_DSN
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: SENTRY_DSN
+                - name: DJANGO_DEBUG
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_DEBUG
+                - name: DJANGO_ALLOWED_HOSTS
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_ALLOWED_HOSTS
+                - name: DJANGO_ADMIN_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_ADMIN_USERNAME
+                - name: DJANGO_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_ADMIN_PASSWORD
+                - name: DJANGO_ADMIN_EMAIL
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_ADMIN_EMAIL
+                - name: DOCKERFILE_TARGET
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DOCKERFILE_TARGET
+                - name: DJANGO_CSRF_TRUSTED_ORIGINS
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_CSRF_TRUSTED_ORIGINS
+
+              volumeMounts:
+                - name: server-storage
+                  mountPath: /app/staticfiles/  # Replace with the actual path where you want to mount the volume
+                - name: logs-storage
+                  mountPath: /app/logs/
+          volumes:
+            - name: server-storage
+              persistentVolumeClaim:
+                claimName: server-storage
+            - name: logs-storage
+              persistentVolumeClaim:
+                claimName: logs-storage
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: server-storage
+      labels:
+        app: gnome-nepal-server  # Updated to match labels
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 2Gi
+
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: logs-storage
+      labels:
+        app: gnome-nepal-server  # Updated to match labels
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 2Gi
+
+
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: server-route
+  labels:
+    app: gnome-nepal-server
+spec:
+  to:
+    kind: Service
+    name: server-service
+  port:
+    targetPort: http  # Use the port name defined in the Service
+  tls:
+    termination: edge

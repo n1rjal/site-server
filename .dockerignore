@@ -2,3 +2,11 @@
 .git
 .venv
 documents
+
+
+staticfiles/**
+logs/**
+
+.age/key.txt
+
+.openshift/secrets.yaml

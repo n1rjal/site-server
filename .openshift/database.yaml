@@ -1,0 +1,176 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotation:
+    openshift.io/display-name: db
+  name: postgres
+  labels:
+    app: gnome-nepal-db
+spec:
+  lookupPolicy:
+    local: true
+
+---
+kind: BuildConfig
+apiVersion: build.openshift.io/v1
+metadata:
+  name: gnome-nepal-db
+  labels:
+    app: gnome-nepal-db
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: 'postgres:latest'
+  resources: {}
+  successfulBuildsHistoryLimit: 5
+  failedBuildsHistoryLimit: 5
+  strategy:
+    type: Docker
+    dockerStrategy:
+      dockerfilePath: Dockerfile.fedora
+  postCommit: {}
+  source:
+    type: Git
+    git:
+      uri: 'https://github.com/sclorg/postgresql-container'
+      ref: master
+    contextDir: 15/
+  triggers:
+    - type: ConfigChange
+  runPolicy: Serial
+
+---
+apiVersion: v1
+kind: List
+items:
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: postgres-service
+      labels:
+        app: gnome-nepal-db
+    spec:
+      selector:
+        app: gnome-nepal-db  # Updated to match Deployment labels
+      ports:
+        - name: tcp  # Added port name
+          port: 5432
+          targetPort: 5432
+
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: gnome-nepal-db-deployment
+      labels:
+        app: gnome-nepal-db  # Ensured consistency
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: gnome-nepal-db  # Ensured consistency
+      template:
+        annotations:
+          alpha.image.policy.openshift.io/resolve-names: '*'
+        metadata:
+          labels:
+            app: gnome-nepal-db  # Ensured consistency
+        spec:
+          containers:
+            - name: gnome-nepal-db
+              image: postgres:latest
+              imagePullPolicy: IfNotPresent
+              ports:
+                - name: tcp
+                  containerPort: 5432
+                  appProtocol: TCP
+
+              env:
+
+                - name: POSTGRESQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_NAME
+
+                - name: POSTGRESQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_USER
+
+                - name: POSTGRESQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_PASSWORD
+
+                - name: POSTGRES_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DB_PASSWORD
+
+              volumeMounts:
+                - name: db-storage
+                  mountPath: /var/lib/postgresql/data
+
+              securityContext:
+                capabilities: {}
+                privileged: false
+          volumes:
+
+            - name: db-storage
+              persistentVolumeClaim:
+                claimName: db-storage
+
+            - name: db-run-storage
+              persistentVolumeClaim:
+                claimName: db-run-storage
+
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: db-storage
+      labels:
+        app: gnome-nepal-db  # Updated to match labels
+    spec:
+      storageClassName: efs-csi
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 20Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: db-run-storage
+      labels:
+        app: gnome-nepal-db  # Updated to match labels
+    spec:
+      storageClassName: efs-csi
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 1Gi
+
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: db-route
+  labels:
+    app: gnome-nepal-db
+spec:
+  to:
+    kind: Service
+    name: server-db
+  port:
+    targetPort: tcp  # Use the port name defined in the Service
+  tls:
+    termination: edge
