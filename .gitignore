@@ -178,3 +178,7 @@ cython_debug/
 
 staticfiles/**
 logs/**
+
+.age/age-key.txt
+
+.openshift/secrets.yaml
