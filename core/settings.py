@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "faq",
     "event",
     "nested_admin",
+    "healthcheck",
 ]
 
 MIDDLEWARE = [
@@ -272,3 +273,5 @@ LOGGING = {
 JAZZMIN_SETTINGS = {
     "show_ui_builder": True,
 }
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
