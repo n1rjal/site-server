@@ -119,6 +119,12 @@ items:
                     secretKeyRef:
                       name: django-server-secret
                       key: DOCKERFILE_TARGET
+                - name: DJANGO_CSRF_TRUSTED_ORIGINS
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: DJANGO_CSRF_TRUSTED_ORIGINS
+
               volumeMounts:
                 - name: server-storage
                   mountPath: /app/staticfiles/  # Replace with the actual path where you want to mount the volume
