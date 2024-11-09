@@ -37,7 +37,7 @@ items:
         spec:
           containers:
             - name: gnome-nepal-server
-              image: site-server:latest
+              image: ghcr.io/gnome-nepal/site-server/gnome-nepal-backend:nightly
               imagePullPolicy: IfNotPresent
               ports:
                 - name: http
