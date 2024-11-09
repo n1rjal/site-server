@@ -47,6 +47,9 @@ items:
                 httpGet:
                   path: /healthcheck/
                   port: 8000
+                  httpHeaders:
+                    - name: host
+                      value: server-route-gnome-np.apps.openshift.gnome.org
                 initialDelaySeconds: 150  # Wait for 120 seconds (to cover collectstatic + other tasks)
                 periodSeconds: 5         # Check every 5 seconds after initial delay
                 failureThreshold: 5      # Fail after 3 consecutive failures
@@ -54,6 +57,9 @@ items:
                 httpGet:
                   path: /healthcheck/
                   port: 8000
+                  httpHeaders:
+                    - name: host
+                      value: server-route-gnome-np.apps.openshift.gnome.org
                 initialDelaySeconds: 150  # Wait for the application to be fully ready
                 periodSeconds: 5          # Check every 5 seconds
                 failureThreshold: 5       # Fail after 3 consecutive failures
