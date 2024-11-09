@@ -38,11 +38,25 @@ items:
           containers:
             - name: gnome-nepal-server
               image: ghcr.io/gnome-nepal/site-server/gnome-nepal-backend:nightly
-              imagePullPolicy: IfNotPresent
+              imagePullPolicy: Always
               ports:
                 - name: http
                   containerPort: 8000
                   appProtocol: http
+              livenessProbe:
+                httpGet:
+                  path: /healthcheck/
+                  port: 8000
+                initialDelaySeconds: 150  # Wait for 120 seconds (to cover collectstatic + other tasks)
+                periodSeconds: 5         # Check every 5 seconds after initial delay
+                failureThreshold: 5      # Fail after 3 consecutive failures
+              readinessProbe:
+                httpGet:
+                  path: /healthcheck/
+                  port: 8000
+                initialDelaySeconds: 150  # Wait for the application to be fully ready
+                periodSeconds: 5          # Check every 5 seconds
+                failureThreshold: 5       # Fail after 3 consecutive failures
               env:
                 - name: DJANGO_SECRET_KEY
                   valueFrom:
