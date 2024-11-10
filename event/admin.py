@@ -50,7 +50,7 @@ class EventAdminForms(forms.ModelForm):
 @admin.register(models.Event)
 class EventModelAdmin(NestedModelAdmin):
     form = EventAdminForms
-    list_display = ["title", "is_draft", "start_date", "price", "get_rsvp_url"]
+    list_display = ["title", "is_draft", "start_date", "end_date"]
     search_fields = ["slug", "title"]
     readonly_fields = ["created_at", "updated_at", "slug"]
     inlines = [
@@ -58,30 +58,6 @@ class EventModelAdmin(NestedModelAdmin):
         EventImagesInline,
     ]
     autocomplete_fields = ["location", "event_type", "hot_topics"]
-
-    def get_rsvp_url(self, obj):
-        return format_html(
-            '<a href="{}" target="_blank">' + obj.title + "</a>",
-            obj.rsvp_url,
-        )
-
-    get_rsvp_url.short_description = "RSVP URL"
-
-    def get_rsvp_url(self, obj):
-        return format_html(
-            '<a href="{}" target="_blank">' + obj.title + "</a>",
-            obj.rsvp_url,
-        )
-
-    get_rsvp_url.short_description = "RSVP URL"
-
-    def get_rsvp_url(self, obj):
-        return format_html(
-            '<a href="{}" target="_blank">' + obj.title + "</a>",
-            obj.rsvp_url,
-        )
-
-    get_rsvp_url.short_description = "RSVP URL"
 
 
 @admin.register(models.Speaker)
