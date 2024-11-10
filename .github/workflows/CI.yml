@@ -3,19 +3,17 @@ name: GNOME server CI workflow
 on:
   pull_request:
 
-# sets up python code for linting issue
-# and runnable issues
 jobs:
-  lint_and_deploy_test:
+  deploy_test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         id: python-setup
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
