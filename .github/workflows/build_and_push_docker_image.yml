@@ -28,7 +28,7 @@ jobs:
       - name: Build, Tag, and Push Backend Image (Multi-Platform)
         run: |
           docker buildx build \
-            --platform linux/amd64,linux/arm64 \
+            --platform linux/arm64 \
             --target production \
             -t ghcr.io/$REPOSITORY_LC/gnome-nepal-backend:nightly \
             --push .
