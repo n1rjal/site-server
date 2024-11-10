@@ -79,12 +79,6 @@ Consistent code formatting enhances readability and maintainability. Follow thes
   - Run `flake8` to catch unused variables and other potential issues.
   - Check for adherence to [PEP 8](https://peps.python.org/pep-0008/) and coding best practices.
 
-- Use [isort](https://github.com/PyCQA/isort) to sort imports.
-  - Align `isort` settings with `black` for consistent formatting.
-  - Format multi-line imports using the "Vertical Hanging Indent" style.
-  - Add 2 blank lines after import statements.
-  - Combine `as` imports, grouping them together.
-
 - Use [pre-commit-hooks](https://github.com/pre-commit/pre-commit-hooks) for helpful pre-commit checks.
   - Flags any large files added to the repository.
   - Detects unresolved merge conflict markers in files.

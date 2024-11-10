@@ -29,25 +29,6 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
-      - name: Install dev dependencies
-        run: |
-          python -m pip install black flake8
-
-      - name: Run flake8 linting
-        run: flake8 .
-
-      - name: Run black for formatting check
-        run: black . --check
-
-      - name: Run codespell
-        run: codespell --quiet-level=2
-
-      - name: Run Yamllint
-        run: yamllint .
-
-      - name: Run isort
-        run: isort . --check-only
-
       - name: Add dummy .env file
         run: |
           cp env.example .env

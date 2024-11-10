@@ -1,0 +1,23 @@
+name: Python lint
+
+on:
+  pull_request:
+
+jobs:
+  pre_commit_checks:
+    name: 🚴 Pre-Commit checks 🚴
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@main
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Add dummy .env file
+        run: |
+          cp env.example .env
+      - uses: actions/setup-python@main
+        with:
+          cache: 'pip'
+      - uses: pre-commit/action@main
