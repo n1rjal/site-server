@@ -1,5 +1,6 @@
 # Register your models here.
 from . import models
+from core.base_admin import SummernoteModelAdmin, SummernoteInlineMixin
 from django.contrib import admin
 from django import forms
 from nested_admin import (
@@ -14,13 +15,13 @@ class ScheduleAdmin(admin.ModelAdmin):
     search_fields = ["event", "start_time", "end_time"]
 
 
-class EventScheduleInline(NestedStackedInline):
+class EventScheduleInline(SummernoteInlineMixin, NestedStackedInline):
     model = models.Schedule
     extra = 1
     autocomplete_fields = ["speakers"]
 
 
-class EventImagesInline(NestedStackedInline):
+class EventImagesInline(SummernoteInlineMixin, NestedStackedInline):
     model = models.EventImage
     extra = 1
 
@@ -48,7 +49,7 @@ class EventAdminForms(forms.ModelForm):
 
 
 @admin.register(models.Event)
-class EventModelAdmin(NestedModelAdmin):
+class EventModelAdmin(NestedModelAdmin, SummernoteModelAdmin):
     form = EventAdminForms
     list_display = ["title", "is_draft", "start_date", "end_date"]
     search_fields = ["slug", "title"]
@@ -61,7 +62,7 @@ class EventModelAdmin(NestedModelAdmin):
 
 
 @admin.register(models.Speaker)
-class SpeakersAdmin(admin.ModelAdmin):
+class SpeakersAdmin(SummernoteInlineMixin, admin.ModelAdmin):
     list_display = ["name", "profession", "linkedin", "twitter"]
     search_fields = ["name", "profession"]
 
@@ -95,5 +96,6 @@ class HotTopicAdmin(admin.ModelAdmin):
 admin.site.register(
     [
         models.EventImage,
-    ]
+    ],
+    SummernoteModelAdmin,
 )

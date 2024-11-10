@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "django_celery_beat",
     "django_celery_results",
+    "django_summernote",
     # django apps
     # todo
     "newsletter",
@@ -191,7 +192,9 @@ STORAGES = {
     },
 }
 
+STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, os.getenv("STATIC_ROOT", "staticfiles"))
+MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, os.getenv("MEDIA_ROOT", "media"))
 
 
@@ -276,3 +279,28 @@ JAZZMIN_SETTINGS = {
 }
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SUMMERNOTE_CONFIG = {
+    "summernote": {
+        "width": "100%",
+        "height": "480",
+        "toolbar": [
+            ["style", ["style"]],
+            ["font", ["bold", "italic", "underline", "clear"]],
+            ["fontname", ["fontname"]],
+            ["color", ["color"]],
+            ["para", ["ul", "ol", "paragraph"]],
+            ["table", ["table"]],
+            ["insert", ["link", "picture", "video"]],
+            ["view", ["fullscreen", "codeview"]],
+        ],
+    },
+    # Require users to be authenticated for uploading attachments.
+    "attachment_require_authentication": True,
+    # Set custom storage class for attachments.
+    "attachment_storage_class": (
+        "django.core.files.storage.FileSystemStorage"
+    ),
+    # Set to `False` to return attachment paths in relative URIs.
+    "attachment_absolute_uri": True,
+}
