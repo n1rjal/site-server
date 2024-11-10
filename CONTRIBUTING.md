@@ -22,7 +22,7 @@ Please read and adhere to our [Code of Conduct](CODE_OF_CONDUCT.md). By particip
 You can contribute in several ways:
 - [Reporting bugs](https://github.com/GNOME-Nepal/site-server/issues/new?assignees=rex9840%2Cn1rjal%2CSailesh-Singh&labels=bug&projects=&template=BUG-REPORT.yml)
 - [Suggesting features](https://github.com/GNOME-Nepal/site-server/issues/new?assignees=rex9840%2Cn1rjal%2CSailesh-Singh&labels=feature%2Cenhancement%2Cquestion&projects=&template=FEATURE-REQUEST.yml)
-- [Suggesting Enchancements and improvements](https://github.com/GNOME-Nepal/site-server/issues/new?assignees=rex9840%2Cn1rjal%2CSailesh-Singh&labels=enhancement%2Cquestion&projects=&template=IMPROVEMENTS.yml)
+- [Suggesting Enhancements and improvements](https://github.com/GNOME-Nepal/site-server/issues/new?assignees=rex9840%2Cn1rjal%2CSailesh-Singh&labels=enhancement%2Cquestion&projects=&template=IMPROVEMENTS.yml)
 - Writing or improving documentation
 - Submitting bug fixes or enhancements
 
@@ -37,10 +37,10 @@ You can contribute in several ways:
    git clone https://github.com/GNOME-Nepal/site-server.git
    cd site-server
    ```
-   
-3. **Setup env**
 
-   Set up environment variables env by copying the env.example file and updating its entries to match your local settings.
+3. **Setup Virtual Environment**
+
+   Set up environment variables .env by copying the env.example file and updating its entries to match your local settings.
    ```bash
    cp env.example .env
    ```
@@ -51,7 +51,17 @@ You can contribute in several ways:
    source ./.venv/bin/activate
    ```
 
-5. **Create a branch for your changes:**
+5. **Install requirements**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+6. **Install Pre-commit Hooks**
+   ```bash
+   pre-commit install
+   ```
+
+7. **Create a branch for your changes:**
    ```bash
    git checkout -b your-branch-name
    ```
@@ -66,13 +76,12 @@ You can sync the fork using Github's UI
    Implement your changes in the relevant files.
 
 3. **Test your changes:**
-    Ensure your changes work as intended and do not introduce new issues. Make sure that the Docker image thus created is runnable and doesn't cause furthur issues during build or in production.
+    Ensure your changes work as intended and do not introduce new issues. Make sure that the Docker image thus created is runnable and doesn't cause further issues during build or in production.
 
 4. **Lint your changes:**
     Inside the virtual environment, use the following commands
-    ```
-    python -m black . # Formats your code to meet our coding standards
-    python -m flake8  # Identifies unused variables and linting issues
+    ```bash
+    pre-commit run --all-files
     ```
 
     Please note that our workflow will ignore your changes if it doesn't run or if linting is failing. If you need any help with that, feel free to create a PR and ask the help from maintainer.

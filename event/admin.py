@@ -1,13 +1,10 @@
 # Register your models here.
+from django import forms
 from . import models
 from core.base_admin import SummernoteModelAdmin, SummernoteInlineMixin
 from django.contrib import admin
-from django import forms
-from nested_admin import (
-    NestedStackedInline,
-    NestedModelAdmin,
-)
 from django.utils.html import format_html
+from nested_admin import NestedModelAdmin, NestedStackedInline
 
 
 class ScheduleAdmin(admin.ModelAdmin):
