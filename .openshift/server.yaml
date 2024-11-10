@@ -185,8 +185,6 @@ items:
         requests:  # Corrected from 'request' to 'requests'
           storage: 2Gi
 
-
-
 ---
 apiVersion: route.openshift.io/v1
 kind: Route

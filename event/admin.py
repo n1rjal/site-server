@@ -6,8 +6,6 @@ from django.contrib import admin
 from django.utils.html import format_html
 from nested_admin import NestedModelAdmin, NestedStackedInline
 
-from . import models
-
 
 class ScheduleAdmin(admin.ModelAdmin):
     list_display = ["event", "start_time", "end_time"]
