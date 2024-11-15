@@ -144,6 +144,11 @@ items:
                     secretKeyRef:
                       name: django-server-secret
                       key: DJANGO_CSRF_TRUSTED_ORIGINS
+                - name: MEDIA_ROOT
+                  valueFrom:
+                    secretKeyRef:
+                      name: django-server-secret
+                      key: MEDIA_ROOT
 
               volumeMounts:
                 - name: server-storage
@@ -170,6 +175,20 @@ items:
       resources:  # Corrected from 'resource' to 'resources'
         requests:  # Corrected from 'request' to 'requests'
           storage: 2Gi
+
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: db-storage
+      labels:
+        app: gnome-nepal-server   # Updated to match labels
+    spec:
+      storageClassName: efs-csi
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 20Gi
 
 
   - apiVersion: v1

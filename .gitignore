@@ -182,3 +182,4 @@ logs/**
 .age/key.txt
 
 .openshift/secrets.yaml
+media/**
