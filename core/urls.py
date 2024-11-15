@@ -64,8 +64,12 @@ urlpatterns = [
     ),
 ]
 
-# we will be using this in production as well, we have NFS we don't need to worry about this
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# we will be using this in production as well,
+# we have NFS we don't need to worry about this
+urlpatterns += static(
+    settings.MEDIA_URL,
+    document_root=settings.MEDIA_ROOT,
+)
 
 if settings.DEBUG:
     urlpatterns += static(
