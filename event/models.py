@@ -43,6 +43,9 @@ class Event(models.Model):
     end_date = models.DateField(blank=False, null=False)
     description = models.TextField(blank=False, null=False)
     rsvp_url = models.URLField(max_length=500, null=True, blank=True)
+    image = models.ImageField(
+        upload_to="media/%Y/%m/%d/events", null=True, blank=True
+    )
     add_to_calender_url = models.URLField(
         max_length=500, null=True, blank=True
     )
@@ -183,6 +186,11 @@ class Speaker(models.Model):
     twitter = models.URLField(max_length=255)
     linkedin = models.URLField(max_length=255)
     description = models.TextField(blank=False, null=True)
+    image = models.ImageField(
+        upload_to="media/%Y/%m/%d/speakers/",
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
@@ -198,6 +206,11 @@ class Schedule(models.Model):
         max_length=2,
         null=False,
         blank=False,
+    )
+    image = models.ImageField(
+        upload_to="media/%Y/%m/%d/schedules/",
+        null=True,
+        blank=True,
     )
     speakers = models.ManyToManyField(Speaker)
     # location can be like "In building A, room number 5 etc"
@@ -222,7 +235,9 @@ class EventImage(models.Model):
         to_field="slug",
     )
     caption = models.TextField(null=True, blank=True)
-    image = models.ImageField(null=False, blank=False)
+    image = models.ImageField(
+        upload_to="media/%Y/%m/%d/event_images", null=True, blank=True
+    )
     position = models.IntegerField(default=1)
     published = models.BooleanField(default=False)
 
