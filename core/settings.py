@@ -309,3 +309,8 @@ SUMMERNOTE_CONFIG = {
     # Set to `False` to return attachment paths in relative URIs.
     "attachment_absolute_uri": True,
 }
+
+
+MIGRATION_MODULES = {
+    "django_summernote": "summernote.migrations",
+}
