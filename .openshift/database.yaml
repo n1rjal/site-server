@@ -130,7 +130,19 @@ items:
               persistentVolumeClaim:
                 claimName: db-run-storage
 
-
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      name: db-storage
+      labels:
+        app: gnome-nepal-db  # Updated to match labels
+    spec:
+      storageClassName: efs-csi
+      accessModes:
+        - ReadWriteOnce
+      resources:  # Corrected from 'resource' to 'resources'
+        requests:  # Corrected from 'request' to 'requests'
+          storage: 20Gi
 
   - apiVersion: v1
     kind: PersistentVolumeClaim
